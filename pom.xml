@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.sslteam</groupId>
+  <groupId>com.jadaptive</groupId>
   <artifactId>sslteam-api</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
-  <name>SSLTeam API Contracts</name>
-  <description>Framework-neutral Java request, response, audit, and enum contracts for SSLTeam APIs</description>
+  <name>SSLTeam API</name>
+  <description>Public, framework-neutral Java wire contracts for SSLTeam certificate APIs</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

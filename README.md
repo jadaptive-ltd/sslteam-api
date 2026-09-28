@@ -8,13 +8,13 @@ It contains the shared request and response records, enums, validation annotatio
 
 This artifact owns the wire contract only. It does not contain certificate signing, issuance policy, persistence, REST runtime code, TLS transport, or authentication implementation.
 
-The existing `com.sslteam.cert.api` package names are preserved so server and client consumers can share the same models without duplicate definitions or source-level API changes.
+The existing `com.jadaptive.sslteam.cert.api` package names are preserved so server and client consumers can share the same models without duplicate definitions or source-level API changes.
 
 ## Maven
 
 ```xml
 <dependency>
-  <groupId>com.sslteam</groupId>
+  <groupId>com.jadaptive</groupId>
   <artifactId>sslteam-api</artifactId>
   <version>1.0.0</version>
 </dependency>
