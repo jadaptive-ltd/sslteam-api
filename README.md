@@ -1,29 +1,95 @@
 # SSLTeam API
 
-`sslteam-api` is the public, framework-neutral Java contract library for SSLTeam APIs.
+Framework-neutral Java contracts for the SSLTeam certificate and authentication APIs.
 
-It contains the shared request and response records, enums, validation annotations, certificate inventory models, and audit models used by SSLTeam server adapters, the reusable Java client, and the CLI.
+`sslteam-api` is the shared contract layer used by SSLTeam services, the Java client, and the
+command-line application. It gives producers and consumers the same typed representation of
+requests, responses, certificate state, scopes, inventories, and audit data.
 
-## Scope
+**Current version:** `1.0.0-SNAPSHOT`<br>
+**Java:** 25
 
-This artifact owns the wire contract only. It does not contain certificate signing, issuance policy, persistence, REST runtime code, TLS transport, or authentication implementation.
+## Why this project exists
 
-The existing `com.jadaptive.sslteam.cert.api` package names are preserved so server and client consumers can share the same models without duplicate definitions or source-level API changes.
+SSLTeam integrations should not need to depend on server internals or duplicate the API model in
+every application. This library keeps the public wire contract in one small, framework-independent
+artifact that can be shared across services, clients, and tooling.
 
-## Maven
+It is intentionally a contract library, not a complete SSLTeam SDK. It does not make HTTP calls,
+choose TLS trust, persist credentials, sign certificates, enforce authorization, or provide REST
+resources.
+
+## What's included
+
+- Root, intermediate, and leaf certificate request and response models
+- Certificate lifecycle, family, inventory, and audit contracts
+- Certificate import and artifact-download contracts
+- Team and environment scope models
+- Authentication, refresh, device authorization, and JWT discovery responses
+- Certificate algorithm and status enums
+- Jakarta Validation annotations used by contract fields
+
+The public Java namespace is `com.jadaptive.sslteam.cert.api`, organized by domain:
+`root`, `intermediate`, `leaf`, `inventory`, `imports`, `family`, and `scope`.
+
+## How SSLTeam uses it
+
+Inside `sslteam-services`, this artifact is consumed by the certificate core and REST modules, the
+reusable `sslteam-client`, and the CLI. The client serializes and deserializes these same records;
+the service modules remain responsible for authorization, policy, persistence, and lifecycle
+decisions.
+
+This makes the API artifact useful for:
+
+- Java services integrating with SSLTeam endpoints
+- adapters that translate SSLTeam contracts into another framework
+- test fixtures and contract tests
+- applications that need typed API models without the server runtime
+
+## Maven coordinates
 
 ```xml
 <dependency>
   <groupId>com.jadaptive</groupId>
   <artifactId>sslteam-api</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
-## Build
+The current version is a development snapshot. Snapshot consumers should use the repository that
+hosts the snapshot before resolving this dependency:
 
-```sh
-mvn test
+```xml
+<repository>
+  <id>central-jadaptive</id>
+  <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+  <releases><enabled>false</enabled></releases>
+  <snapshots><enabled>true</enabled></snapshots>
+</repository>
 ```
 
-The project targets Java 25.
+## Minimal contract flow
+
+`PkiScope` keeps the team and environment together when a certificate operation is scoped. The
+contract library validates these values and carries them through request and response types; it
+does not send HTTP requests itself:
+
+```java
+import com.jadaptive.sslteam.cert.api.contract.root.RootCaSetupRequest;
+import com.jadaptive.sslteam.cert.api.contract.scope.PkiScope;
+
+PkiScope scope = new PkiScope("default", "default");
+RootCaSetupRequest request = new RootCaSetupRequest(
+  scope, "sslteam-root", "Example Organization", "Security");
+```
+
+The embedding application can serialize this request and send it through its chosen service client
+or adapter.
+
+For the typed HTTP client, pair this artifact with
+[`sslteam-client`](https://github.com/jadaptive-ltd/sslteam-client).
+
+## Related projects
+
+- [`sslteam-client`](https://github.com/jadaptive-ltd/sslteam-client): typed Java client for calling SSLTeam services
+- [SSLTeam organization](https://github.com/jadaptive-ltd): project source and issue tracking
