@@ -28,6 +28,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <build.projectProperties>${basedir}/jadaptive.build.properties</build.projectProperties>
+    <build.userProperties>${user.home}/.jadaptive.build.properties</build.userProperties>
     <maven.compiler.release>25</maven.compiler.release>
     <junit.version>5.13.4</junit.version>
     <validation-api.version>3.1.1</validation-api.version>
@@ -51,6 +53,26 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>read-project-properties</goal>
+            </goals>
+            <configuration>
+              <quiet>true</quiet>
+              <files>
+                <file>${build.projectProperties}</file>
+                <file>${build.userProperties}</file>
+              </files>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
