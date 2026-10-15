@@ -20,12 +20,17 @@ package com.jadaptive.sslteam.auth.api;
  * #L%
  */
 
-public final class BuiltInRoles {
+import java.time.Instant;
+import java.util.UUID;
 
-    public static final String ADMIN = "role_admin";
-    public static final String OPERATOR = "role_operator";
-    public static final String VIEWER = "role_viewer";
-
-    private BuiltInRoles() {
-    }
+public record CredentialStateViewResponse(
+        UUID userId,
+        String username,
+        String credentialState,
+        Instant credentialIssuedAt,
+        Instant credentialExpiresAt,
+        boolean expired,
+        Long expiresInSeconds,
+        Instant lastPasswordUpdatedAt,
+        String recommendedAction) {
 }
