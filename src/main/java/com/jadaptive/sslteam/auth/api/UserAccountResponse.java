@@ -34,5 +34,22 @@ public record UserAccountResponse(
         Instant createdAt,
         Instant updatedAt,
         List<String> roleCodes,
-        boolean protectedAccount) {
+        boolean protectedAccount,
+        UserActorResponse createdBy,
+        UserActorResponse updatedBy) {
+
+    public UserAccountResponse(
+            UUID id,
+            long version,
+            String username,
+            String displayName,
+            String email,
+            String status,
+            Instant createdAt,
+            Instant updatedAt,
+            List<String> roleCodes,
+            boolean protectedAccount) {
+        this(id, version, username, displayName, email, status, createdAt, updatedAt, roleCodes,
+                protectedAccount, null, null);
+    }
 }
