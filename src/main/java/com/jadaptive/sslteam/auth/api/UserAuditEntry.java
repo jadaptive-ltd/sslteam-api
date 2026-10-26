@@ -21,6 +21,7 @@ package com.jadaptive.sslteam.auth.api;
  */
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 public record UserAuditEntry(
@@ -31,5 +32,6 @@ public record UserAuditEntry(
         String result,
         String reasonCode,
         String correlationId,
-        String actorDisplayName) {
+        String actorDisplayName,
+        List<UserAuditChange> changes) {
 }
